@@ -91,7 +91,22 @@ func (d *dbCreator) CreateDB(dbName string) error {
 	}
 
 	var model []mongo.IndexModel
-	if documentPer {
+	if timeseriesMetricIndex {
+		model = []mongo.IndexModel{
+			{
+				Keys: bson.D{
+					{"time", 1},
+					{"tags.hostname", 1},
+				},
+			},
+			{
+				Keys: bson.D{
+					{"usage_user", -1},
+					{"time", 1},
+				},
+			},
+		}
+	} else if documentPer {
 		model = []mongo.IndexModel{
 			{
 				Keys: bson.D{{"time", 1}, {"tags.hostname", 1}},

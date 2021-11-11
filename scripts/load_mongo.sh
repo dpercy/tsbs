@@ -24,6 +24,7 @@ ORDERED_INSERTS=${ORDERED_INSERTS:-true}
 RANDOM_FIELD_ORDER=${RANDOM_FIELD_ORDER:-false}
 #default to timeseries_collection_sharded to false
 TIMESERIES_COLLECTION_SHARDED=${TIMESERIES_COLLECTION_SHARDED:-false}
+TIMESERIES_METRIC_INDEX=${TIMESERIES_METRIC_INDEX:-false}
 
 cat ${DATA_FILE} | gunzip | $EXE_FILE_NAME \
                                 --db-name=${DATABASE_NAME} \
@@ -36,4 +37,5 @@ cat ${DATA_FILE} | gunzip | $EXE_FILE_NAME \
                                 --random-field-order=${RANDOM_FIELD_ORDER} \
                                 --reporting-period=${PROGRESS_INTERVAL} \
                                 --timeseries-collection-sharded=${TIMESERIES_COLLECTION_SHARDED} \
+                                --timeseries-metric-index=${TIMESERIES_METRIC_INDEX} \
 

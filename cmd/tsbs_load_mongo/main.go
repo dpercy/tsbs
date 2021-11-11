@@ -33,6 +33,7 @@ var (
 	orderedInserts       bool
 	randomFieldOrder     bool
 	timeseriesCollectionSharded bool
+	timeseriesMetricIndex bool
 )
 
 // Global vars
@@ -53,6 +54,7 @@ func init() {
 	pflag.Bool("ordered-inserts", true, "Whether to use ordered inserts")
 	pflag.Bool("random-field-order", true, "Whether to use random field order")
 	pflag.Bool("timeseries-collection-sharded", false, "Whether to shard a time-series collection")
+	pflag.Bool("timeseries-metric-index", false, "Whether to allow indexing fields besides time and tags")
 
 	pflag.Parse()
 
@@ -74,12 +76,16 @@ func init() {
 	orderedInserts = viper.GetBool("ordered-inserts")
 	randomFieldOrder = viper.GetBool("random-field-order")
 	timeseriesCollectionSharded = viper.GetBool("timeseries-collection-sharded")
+	timeseriesMetricIndex = viper.GetBool("timeseries-metric-index")
 
 	if !documentPer && timeseriesCollection {
 		log.Fatal("Must set document-per-event=true in order to use timeseries-collection=true")
 	}
 	if !timeseriesCollection && timeseriesCollectionSharded {
 		log.Fatal("Must set timeseries-collection=true in order to use timeseries-collection-sharded=true")
+	}
+	if !timeseriesCollection && timeseriesMetricIndex {
+		log.Fatal("Must set timeseries-collection=true in order to use timeseries-metric-index=true")
 	}
 
 	loader = load.GetBenchmarkRunner(config)
